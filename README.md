@@ -1,8 +1,11 @@
 ## How to run this demo
+
 `sudo chown -R www-data:www-data db/ # fix permissions on sqlite database`
+
 `docker-compose up -d`
 
 Optional:
+
 `sudo rm db/db.sqlite # start the autocompletions table from scratch`
 ## autocomplete demo
 

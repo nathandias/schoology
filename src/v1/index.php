@@ -59,38 +59,45 @@ class term {
 
     static public function post($request) {
         global $db;
+
+        $json_response = null;
         
         // handle a POST request
         $body = file_get_contents('php://input');
-        switch(strtolower($_SERVER['HTTP_CONTENT_TYPE'])) {
+        $content_type = strtolower($_SERVER['CONTENT_TYPE']);
+        switch(strtolower($content_type)) {
             case "application/json":
-                $json_object = json_decode($body);
+                
+                $json_object = json_decode($body); // should contain { "term" : "the term" }
+        
+                // Validate input (todo)
+                // make sure there's one an only key value pair ("term" => "a string")
+                // escape the string and avoid SQL injection attacks
+                $term = $json_object->term;
+                
+                $statement = $db->prepare("INSERT INTO autocompletions (term) VALUES ( :term );");
+                $statement->bindValue(':term', $term, SQLITE3_TEXT);
+                $result = $statement->execute();
+                $id = $db->lastInsertRowID();
+                
+                $json_response = json_encode(array('id' => $id));
+
+                // Create new Resource
+                http_response_code(201); // Created
+                $site = 'http://localhost';
+                header("Location: $site/" . $_SERVER['REQUEST_URI'] . "/$id");       
                 break;
             default:
+                $json_response = json_encode(array('unsupported content type' => $content_type));
                 http_response_code(415); // unsupported media type
-        }
-    
-        // Validate input
-        // make sure there's one an only key value pair ("term" => "a string")
-        // escape the string and avoid SQL injection attacks
-        $term = $json_object['term'];
-    
-        // Create new Resource
-
-        $statement = $db->prepare('INSERT INTO "autocompletions" ("term") VALUES (":term");');
-        $statement->bindValue(':term', $term);
-        $result = $statement->execute();
-        $last_row_id = $db->lastInsertRowID();
-        
-        $json_response = json_encode(array('id' => $id));
-    
-        http_response_code(201); // Created
-        $site = 'http://localhost';
-        header("Location: $site/" . $_SERVER['REQUEST_URI'] . "/$id");
+                break;
+        }       
+            
         header('Content-Type: application/json');
-        print $json;
+        print $json_response;
     }
-} 
+
+}
 
 class terms {
     // handle requests related
@@ -101,7 +108,7 @@ class terms {
         
         global $db;
         
-        $results = $db->query('SELECT DISTINCT term FROM autocompletions;');
+        $results = $db->query('SELECT DISTINCT term FROM autocompletions ORDER BY term ASC;');
 
         $terms = [];
 

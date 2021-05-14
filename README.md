@@ -19,7 +19,9 @@ http://localhost/
 
 Returns list of unique autocompletion terms as JSON like:
 
-{ "terms" : "Foo", "Bar", "string containing spaces" }
+{
+    "terms" : ["Foo", "Bar", "string containing spaces"]
+}
 
 ### GET http://localhost/term/{int:id} READ
 

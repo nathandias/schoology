@@ -1,6 +1,9 @@
-## How to run this app
+## How to run this demo
+`sudo chown -R www-data:www-data db/ # fix permissions on sqlite database`
 `docker-compose up -d`
 
+Optional:
+`sudo rm db/db.sqlite # start the autocompletions table from scratch`
 ## autocomplete demo
 
 Visit:
@@ -11,13 +14,13 @@ http://localhost/
 
 ### GET http://localhost/terms  READ
 
-Returns list of unique autocomplete terms as JSON like:
+Returns list of unique autocompletion terms as JSON like:
 
 { "terms" : "Foo", "Bar", "string containing spaces" }
 
 ### GET http://localhost/term/{int:id} READ
 
-Returns a single autocomplete term specified by id as JSON like:
+Returns a single autocompletion term specified by id as JSON like:
 
 { "id" : 1,
   "term" : "a string"
@@ -25,7 +28,7 @@ Returns a single autocomplete term specified by id as JSON like:
 
 ### POST http://localhost/term CREATE
 
-Adds a term to the autocomplete table and returns the id of the newly created row:
+Adds a term to the autocompletion table and returns the id of the newly created row:
 
 Request:
 

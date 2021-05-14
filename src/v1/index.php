@@ -3,24 +3,28 @@
 // open a handle to the database
 $db = new SQLite3('/var/www/db/db.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
-// create a table of autocomplete terms
+// create a table of autocompletions terms
 $db->query(
-    'CREATE TABLE IF NOT EXISTS "autocomplete" (
+    'CREATE TABLE IF NOT EXISTS "autocompletions" (
         "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         "term" VARCHAR
     )'
 );
 
-// if the autocomplete table is empty, seed it with some sample data for testing
-$term_count = $db->querySingle("SELECT COUNT('id') FROM autocomplete");
+// if the autocompletions table is empty, seed it with some sample data for testing
+$term_count = $db->querySingle("SELECT COUNT('id') FROM autocompletions");
 if ($term_count == 0) {
-    $db->query('INSERT INTO "autocomplete" ("term") VALUES ("Nathan")');
-    $db->query('INSERT INTO "autocomplete" ("term") VALUES ("Rowland")');
-    $db->query('INSERT INTO "autocomplete" ("term") VALUES ("Oscar")');
-    $db->query('INSERT INTO "autocomplete" ("term") VALUES ("Rosemarie")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Apple")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Application")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Bannana")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Orange")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("orangutans are Monkeys")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Monkey")'); 
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("Pear")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("pear cider")');
+    $db->query('INSERT INTO "autocompletions" ("term") VALUES ("person")');
+
 }
-
-
 class term {
 
     static public function get($request) {
@@ -32,7 +36,7 @@ class term {
 
         $id = array_shift($request);
         
-        $stmt = $db->prepare('SELECT id, term FROM autocomplete WHERE id = :id;');
+        $stmt = $db->prepare('SELECT id, term FROM autocompletions WHERE id = :id;');
         $stmt->bindValue(':id', $id);
         $results = $stmt->execute();
 
@@ -73,7 +77,7 @@ class term {
     
         // Create new Resource
 
-        $statement = $db->prepare('INSERT INTO "autocomplete" ("term") VALUES (":term");');
+        $statement = $db->prepare('INSERT INTO "autocompletions" ("term") VALUES (":term");');
         $statement->bindValue(':term', $term);
         $result = $statement->execute();
         $last_row_id = $db->lastInsertRowID();
@@ -93,11 +97,11 @@ class terms {
 
     static public function get($request) {
         // handle a GET request
-        // v1/terms     --> return all autocomplete terms
+        // v1/terms     --> return all autocompletions terms
         
         global $db;
         
-        $results = $db->query('SELECT DISTINCT term FROM autocomplete;');
+        $results = $db->query('SELECT DISTINCT term FROM autocompletions;');
 
         $terms = [];
 

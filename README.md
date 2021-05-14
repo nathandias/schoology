@@ -1,5 +1,5 @@
 ## How to run this app
-`docker-compose up -d
+`docker-compose up -d`
 
 ## autocomplete demo
 

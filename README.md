@@ -1,6 +1,6 @@
 ## How to run this demo
 
-`sudo chown -R www-data:www-data db/ # fix permissions on sqlite database`
+`sudo chown -R www-data db # fix permissions on sqlite database`
 
 `docker-compose up -d`
 

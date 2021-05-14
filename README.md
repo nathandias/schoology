@@ -43,7 +43,7 @@ Returns a single autocompletion term specified by id as JSON like:
 
 Example:
 
-`curl -v -d "{'term': 'the term to add'}" -H "Content-Type: application/json" -H "Accept: application/json" http://localhost/term`
+`curl -v -d '{"term": "the term to add"}' -H "Content-Type: application/json" -H "Accept: application/json" http://localhost/term`
 
 Adds a term to the autocompletion table and returns the id of the newly created row:
 

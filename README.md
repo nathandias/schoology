@@ -60,6 +60,7 @@ Response:
 
 ## TODO
 1. FIX: Front-end autocomplete UI does not accept/confirmed selected option...UI needs proper configuration.
+2. FIX: curl -v http://localhost/term/{id} w/ invalid/out-of-range id returns 404, but no 404 page displayed in Firefox/browser
 2. ADD: Embed the autocomplete input in an HTML FORM, and on submit:
     - implement a getResults() function to return results for the search
     - add the "new" search term to the autocomplete table by POSTing to http://localhost/term

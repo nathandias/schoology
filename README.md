@@ -2,11 +2,14 @@
 
 `sudo chown -R www-data db # fix permissions on sqlite database`
 
-`docker-compose up -d`
+`docker-compose build --no-cache`
+
+`docker-compose up`
 
 Optional:
 
 `sudo rm db/db.sqlite # start the autocompletions table from scratch`
+
 ## autocomplete demo
 
 Visit:
